@@ -6,7 +6,7 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers // Added for guildMemberAdd event
+    GatewayIntentBits.GuildMembers // Wichtig für Member-Events
   ]
 });
 
@@ -16,9 +16,9 @@ const embeds = {
     .setURL('https://ogsware.com/')
     .setDescription(`If you would like to receive a **10% discount** on your next order, please leave a https://discord.com/channels/1339668113473409186/1339668114517917822 by following these steps:
 
-<:YellowDot:1381703990781415424> Use the command /vouch
-<:YellowDot:1381703990781415424> Rate your purchase from 1 to 5 stars
-<:YellowDot:1381703990781415424> Write a brief review about your experience
+<:YellowDot:1381703990781415424> Use the command /vouch  
+<:YellowDot:1381703990781415424> Rate your purchase from 1 to 5 stars  
+<:YellowDot:1381703990781415424> Write a brief review about your experience  
 <:YellowDot:1381703990781415424> Attach a picture (this is crucial)
 
 Once you've completed these steps, contact the server owner to claim your **10% discount** on your next order.`)
@@ -34,8 +34,8 @@ Once you've completed these steps, contact the server owner to claim your **10% 
     .setURL('https://ogsware.com/')
     .setDescription(`Thank you for your interest in our services, to start your **PayPal payment** please follow these instructions:
 
-<:YellowDot:1381703990781415424> Send as Family & Friends
-<:YellowDot:1381703990781415424> Send from PayPal balance
+<:YellowDot:1381703990781415424> Send as Family & Friends  
+<:YellowDot:1381703990781415424> Send from PayPal balance  
 <:YellowDot:1381703990781415424> Do not provide a note
 
 **PayPal Link: https://www.paypal.com/paypalme/ogstools**`)
@@ -47,14 +47,22 @@ Once you've completed these steps, contact the server owner to claim your **10% 
     }),
 };
 
+// ⏱ Dauerhaft Status setzen
 client.once('ready', async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
-  client.user.setPresence({
-    activities: [{ name: '⭐ ogsware.com', type: 3 }],
-    status: 'online'
-  });
+
+  const setBotPresence = () => {
+    client.user.setPresence({
+      activities: [{ name: '⭐ ogsware.com', type: 3 }],
+      status: 'online'
+    });
+  };
+
+  setBotPresence();
+  setInterval(setBotPresence, 15 * 60 * 1000); // Alle 15 Minuten aktualisieren
 });
 
+// 📩 Nachrichtenbefehle
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
 
@@ -71,10 +79,9 @@ client.on('messageCreate', async message => {
   }
 });
 
-// ✅ New member join logging embed
+// 🎉 Neuer Benutzer tritt dem Server bei
 client.on('guildMemberAdd', async member => {
-  // Replace with your log channel ID
-  const logChannelId = '1339668114702602424';
+  const logChannelId = '1339668114702602424'; // 🟡 DEIN Channel-ID hier
 
   const channel = member.guild.channels.cache.get(logChannelId);
   if (!channel) return console.error('❌ Log channel not found.');
@@ -85,8 +92,16 @@ client.on('guildMemberAdd', async member => {
     .setColor('#FFFF00')
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
     .addFields(
-      { name: 'Username', value: `${member.user.tag}`, inline: true },
-      { name: 'Account Created', value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>`, inline: true }
+      {
+        name: 'Username',
+        value: `${member.user.username}#${member.user.discriminator}`, // korrektes Format
+        inline: true
+      },
+      {
+        name: 'Account Created',
+        value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>`,
+        inline: true
+      }
     )
     .setFooter({
       text: `User ID: ${member.id}`,
@@ -98,3 +113,4 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
