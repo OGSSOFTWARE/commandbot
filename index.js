@@ -16,6 +16,7 @@ const embeds = {
     .setURL('https://ogsware.com/')
     .setDescription(`If you would like to receive a **10% discount** on your next order, please leave a https://discord.com/channels/1339668113473409186/1339668114517917822 by following these steps:
 
+
 <:YellowDot:1381703990781415424> Use the command /vouch  
 <:YellowDot:1381703990781415424> Rate your purchase from 1 to 5 stars  
 <:YellowDot:1381703990781415424> Write a brief review about your experience  
@@ -33,6 +34,7 @@ Once you've completed these steps, contact the server owner to claim your **10% 
     .setTitle('Interested In Purchasing? - Purchase With PayPal')
     .setURL('https://ogsware.com/')
     .setDescription(`Thank you for your interest in our services, to start your **PayPal payment** please follow these instructions:
+
 
 <:YellowDot:1381703990781415424> Send as Family & Friends  
 <:YellowDot:1381703990781415424> Send from PayPal balance  
@@ -113,4 +115,5 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
 
